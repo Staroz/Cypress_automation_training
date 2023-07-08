@@ -14,15 +14,13 @@ jobs:
             echo '${{ secrets.CREDENTIALS_E2E }}' > cypress/fixtures/credentials1.json
       # Install npm dependencies, cache them correctly
       # and run all Cypress tests
-      - name: Tests 2
-        run: |
-          cat cypress/fixtures/credentials1.json
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
           browser: chrome
       - name: Upload Cypress report
         uses: actions/upload-artifact@v2
+        if: always()
         with:
           name: cypress-report
           path: cypress/reports
