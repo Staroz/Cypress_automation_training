@@ -10,6 +10,7 @@
     "cypress-mochawesome-reporter": "^3.5.1"
   },
   "scripts": {
+    "build": "npm install",
     "test:ui": "cypress open",
     "test:cards": "cypress run --spec cypress/e2e/updateCards.cy.js",
     "test:p": "npx playwright test testTrello"
