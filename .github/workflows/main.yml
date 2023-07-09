@@ -21,16 +21,17 @@ jobs:
           echo '${{ secrets.CREDENTIALS_E2E }}' > cypress/fixtures/credentials1.json
     - name: Run Playwright tests
       run: npx playwright test
-    - name: Get Allure history
-      uses: actions/checkout@v2
+    - uses: actions/upload-artifact@master
+      with:
+        name: allure-results
+        path: allure-results
+    - uses: actions/checkout@v2
       if: always()
       continue-on-error: true
       with:
         ref: gh-pages
         path: gh-pages
-
-    - name: Allure Report action from marketplace
-      uses: simple-elf/allure-report-action@master
+    - uses: simple-elf/allure-report-action@master
       if: always()
       id: allure-report
       with:
@@ -38,11 +39,9 @@ jobs:
         gh_pages: gh-pages
         allure_report: allure-report
         allure_history: allure-history
-
-    - name: Get Allure-report
-      uses: actions/checkout@v2
+    - uses: peaceiris/actions-gh-pages@v2
       if: always()
-      continue-on-error: true
-      with:
-          ref: allure-report
-          path: allure-report
+      env:
+        PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: allure-history
